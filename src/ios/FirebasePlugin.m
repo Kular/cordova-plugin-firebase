@@ -249,6 +249,16 @@ static FirebasePlugin *firebasePlugin;
     }];
 }
 
+- (void)logError:(CDVInvokedUrlCommand *)command {
+    [self.commandDelegate runInBackground:^{
+        NSString* errorMsg = [command.arguments objectAtIndex:0];
+        FIRCrashLog(errorMsg);
+
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
 - (void)setScreenName:(CDVInvokedUrlCommand *)command {
     NSString* name = [command.arguments objectAtIndex:0];
 
